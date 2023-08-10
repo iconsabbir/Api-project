@@ -15,8 +15,8 @@ const serchFood = () =>{
 
 
 const displayFood = (foods) =>{
-    // console.log(foods);
     const resultValue = document.getElementById('serch-result');
+    resultValue.textContent = "";
     foods.forEach(food => {
         const div = document.createElement('div');
         div.classList.add('col'); 
@@ -25,7 +25,9 @@ const displayFood = (foods) =>{
         <img src=${food.strMealThumb} class="card-img-top" alt=${food.strMeal}>
         <div class="card-body">
           <h5 class="card-title">${food.strMeal}</h5>
-          <p class="card-text">${food.strInstructions.silce(0,150)}</p>
+          <p class="card-text">${food.strInstructions.slice(0, 150)}</p>
+
+          <button onclick="foodItems(${food.idMeal})" class="btn w-100 btn-secondary">Order Now</button>
         </div>
 
 
@@ -34,4 +36,27 @@ const displayFood = (foods) =>{
     });
 
 
+}
+
+const foodItems = (mealId) =>{
+    const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`;
+    // console.log(url);
+    fetch(url)
+    .then(response => response.json())
+    .then(data => displaySingleFood(data.meals[0]))
+}
+const displaySingleFood = (food) =>{
+    // console.log(food);
+    const foodItems = document.getElementById("food-item");
+
+    foodItems.innerHTML = `
+             <div class="card">
+                <img src=${food.strMealThumb} class="card-img-top" alt=${food.strMeal}>
+                <div class="card-body">
+                <h5 class="card-title">${food.strMeal}</h5>
+                <p class="card-text">${food.strInstructions}</p>
+        
+            
+                </div>
+            `
 }
